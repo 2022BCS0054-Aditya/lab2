@@ -1,0 +1,51 @@
+name: Train the model
+
+# Triggers on Push and Pull Request to the main branch
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+    branches:
+      - "main"
+
+jobs:
+  train:
+    name: Train the model (lab 2)
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.11, 3.12]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Training Script
+        id: training
+        run: python train.py
+
+      - name: Publish Job Summary
+        run: |
+          echo "**Name:** Your Full Name" >> $GITHUB_STEP_SUMMARY
+          echo "**Roll Number:** Your_Roll_No" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Model Metrics" >> $GITHUB_STEP_SUMMARY
+          echo "- **Mean Squared Error (MSE):** $(jq '.mse' outputs/results.json)" >> $GITHUB_STEP_SUMMARY
+          echo "- **R² Score:** $(jq '.r2_score' outputs/results.json)" >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: model-${{ matrix.python-version }}-${{ github.run_number }}
+          path: outputs/
