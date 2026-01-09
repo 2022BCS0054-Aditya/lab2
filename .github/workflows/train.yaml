@@ -37,8 +37,8 @@ jobs:
 
       - name: Publish Job Summary
         run: |
-          echo "**Name:** Your Full Name" >> $GITHUB_STEP_SUMMARY
-          echo "**Roll Number:** Your_Roll_No" >> $GITHUB_STEP_SUMMARY
+          echo "**Name:** Aditya U Baliga" >> $GITHUB_STEP_SUMMARY
+          echo "**Roll Number:** 2022BCS0054" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "## Model Metrics" >> $GITHUB_STEP_SUMMARY
           echo "- **Mean Squared Error (MSE):** $(jq '.mse' outputs/results.json)" >> $GITHUB_STEP_SUMMARY
