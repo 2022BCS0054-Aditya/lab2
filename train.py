@@ -27,12 +27,14 @@ correlations = df.corr()['quality'].drop('quality')
 
 # scaler = StandardScaler()
 # X_processed = pd.DataFrame(scaler.fit_transform(X), columns=X.columns)
+mm_scaler = MinMaxScaler()
+X_processed = pd.DataFrame(mm_scaler.fit_transform(X), columns=X.columns)
 
 # 3. Train the model
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X_processed, y, test_size=0.2, random_state=42)
 
 # model = Ridge(alpha=10)
-model = RandomForestRegressor(n_estimators=100, max_depth=5, random_state=42)
+model = RandomForestRegressor(n_estimators=100, random_state=42)
 model.fit(X_train, y_train)
 
 # 4. Evaluate the model
