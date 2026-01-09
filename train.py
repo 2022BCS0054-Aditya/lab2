@@ -21,9 +21,9 @@ y = df['quality']
 correlations = df.corr()['quality'].drop('quality')
 
 # feature selection
-# top_features = correlations.abs().sort_values(ascending=False).head(4).index.tolist()
-# print(f"Selected Features based on correlation: {top_features}")
-# X_processed = X[top_features]
+top_features = correlations.abs().sort_values(ascending=False).head(4).index.tolist()
+print(f"Selected Features based on correlation: {top_features}")
+X_processed = X[top_features]
 
 scaler = StandardScaler()
 X_processed = pd.DataFrame(scaler.fit_transform(X), columns=X.columns)
